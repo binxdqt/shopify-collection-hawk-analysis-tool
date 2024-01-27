@@ -4,6 +4,8 @@
 <p>If you've been using Shopify for long enough, you might have noticed that managing collections can be stressful. Especially when you have 50+ collections, with thousands of SKUs, the Shopify Admin UI doesn't quite cut it when you want to check something at a glance. User experience is paramount, and users don't want to land on empty collection pages or even worse, a collection page full of out of stock products.</p>
 <p>I wanted to create a theme section to solve many issues that I come across while managing collections across all Shopify stores that I manage, regardless of theme used. Which is why I created Collection Hawk. This section is a front-end analysis tool for Shopify stores that want to see important details about all of their collections/products in one convenient place.</p>
 
+<p>Sometimes the back-end filtering systems aren't strong enough, or you need an entire app to run checks like the ones mentioned above. However, all of the data exists right in the front-end of Shopify stores. Since you cannot modify Shopify's back-end to fit these purposes, we can instead create sections on the front-end that is hidden from shoppers.</p>
+
 <p>No more manual audits of collections, checking to see if every collection has products, and a picture, and a description. On top of that, <b>no more solutions that you have to pay for</b>!</p>
 
 <p>This theme section is 100% open-source and available for anyone to use for free.</p>
