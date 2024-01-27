@@ -1,0 +1,846 @@
+<style>
+.ch--header{
+  text-align:center;
+}
+
+.ch--vitals{
+  display: flex;
+  justify-content: center;
+}
+
+.ch--inner{
+  text-align: center;
+}
+
+.ch--vital_item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  text-align: center;
+  justify-content: space-between;
+}
+
+.ch--error_table{
+  width:100%;
+  table-layout: fixed;
+  text-align: center;
+}
+
+.ch--tabs {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: space-around;
+}
+
+.ch--tabs button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  width: 100%;
+}
+
+.ch--tabs button:hover {
+  background-color: #ddd;
+}
+
+.ch--tabs button.active {
+  background-color: #ccc;
+}
+
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+  text-align:center;
+}
+</style>
+
+<script>
+  function openReport(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+
+{% assign troublesomeCollDesc = 0 %}
+{% assign troublesomeCollImage = 0 %}
+{% assign troublesomeCollProducts = 0 %}
+{% assign troublesomeCollLow = 0 %}
+
+{% assign troublesomeProdDesc = 0 %}
+{% assign troublesomeProdImage = 0 %}
+{% assign troublesomeProdAvail = 0 %}
+{% assign troublesomeProdCompare = 0 %}
+  
+{% if section.settings.section-enabled == true %}
+  <div class="ch--outer {{ section.settings.theme-wrapper-class }}" style="margin-top:{{ section.settings.section-spacing-top }}{{ section.settings.section-spacing-unit }};margin-bottom:{{ section.settings.section-spacing-bottom }}{{ section.settings.section-spacing-unit }}">
+    <h3 class="ch--header">Welcome, administrator{% comment %}REPL: {{ customer.first_name }}{% endcomment %}.</h3> 
+    <div class="ch--inner">
+      <div class="ch--vitals ch--tabs">
+        {% if section.settings.warn-collection-no-description == true %}
+          <button class="tablinks ch--vital_item" onclick="openReport(event, 'Collection Descriptions')" id="theFirstButton">
+             <svg id="collDescVitalPos" style="fill:red;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+             <svg id="collDescVitalNeg" style="fill:green;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+             <span>Collection Descriptions</span>
+             <span style="font-weight:bold;padding-top:5px;" id="collDescVitalCallout"></span>
+          </button>
+        {% endif %}
+        {% if section.settings.warn-collection-no-image == true %}
+          <button class="tablinks ch--vital_item" onclick="openReport(event, 'Collection Images')">
+             <svg id="collImageVitalPos" style="fill:red;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+             <svg id="collImageVitalNeg" style="fill:green;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+             <span>Collection Images</span>
+             <span style="font-weight:bold;padding-top:5px;" id="collImageVitalCallout"></span>
+          </button>
+        {% endif %}
+        {% if section.settings.warn-collection-no-products == true %}
+          <button class="tablinks ch--vital_item" onclick="openReport(event, 'Empty Collections')">
+             <svg id="collProductsVitalPos" style="fill:red;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+             <svg id="collProductsVitalNeg" style="fill:green;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+             <span>Empty Collections</span>
+             <span style="font-weight:bold;padding-top:5px;" id="collProductsVitalCallout"></span>
+          </button>
+        {% endif %}
+        {% if section.settings.warn-collection-low-products == true %}
+          <button class="tablinks ch--vital_item" onclick="openReport(event, 'Low Product Collections')">
+             <svg id="collLowVitalPos" style="fill:red;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+             <svg id="collLowVitalNeg" style="fill:green;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+             <span>Low Product Collections</span>
+             <span style="font-weight:bold;padding-top:5px;" id="collLowVitalCallout"></span>
+          </button>
+        {% endif %}
+        {% if section.settings.warn-product-no-description == true %}
+          <button class="tablinks ch--vital_item" onclick="openReport(event, 'Product Descriptions')">
+             <svg id="prodDescVitalPos" style="fill:red;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+             <svg id="prodDescVitalNeg" style="fill:green;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+             <span>Product Descriptions</span>
+             <span style="font-weight:bold;padding-top:5px;" id="prodDescVitalCallout"></span>
+          </button>
+        {% endif %}
+        {% if section.settings.warn-product-no-image == true %}
+          <button class="tablinks ch--vital_item" onclick="openReport(event, 'Product Images')">
+             <svg id="prodImageVitalPos" style="fill:red;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+             <svg id="prodImageVitalNeg" style="fill:green;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+             <span>Product Images</span>
+             <span style="font-weight:bold;padding-top:5px;" id="prodImageVitalCallout"></span>
+          </button>
+        {% endif %}
+        {% if section.settings.warn-collection-out-of-stock-products == true %}
+          <button class="tablinks ch--vital_item" onclick="openReport(event, 'Unavailable Products')">
+             <svg id="prodAvailVitalPos" style="fill:red;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+             <svg id="prodAvailVitalNeg" style="fill:green;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+             <span>Unavailable Products</span>
+             <span style="font-weight:bold;padding-top:5px;" id="prodAvailVitalCallout"></span>
+          </button>
+        {% endif %}
+        {% if section.settings.warn-product-compare-at != "disabled" %}
+          <button class="tablinks ch--vital_item" onclick="openReport(event, 'Compare-at Pricing')">
+             <svg id="prodCompareVitalPos" style="fill:red;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+             <svg id="prodCompareVitalNeg" style="fill:green;width:50px;padding-bottom:5px;display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+             <span>Compare-at Pricing</span>
+             <span style="font-weight:bold;padding-top:5px;" id="prodCompareVitalCallout"></span>
+          </button>
+        {% endif %}
+      </div>
+
+    {% if section.settings.section-view-style == "tabs" %}
+      {% if section.settings.warn-collection-no-description == true %}
+        <div id="Collection Descriptions" class="tabcontent">
+          <table class="ch--error_table">
+            <tr class="">
+              <th class="">Issue</th>
+              <th class="">Target Title</th>
+              <th class="">Front-end Link</th>
+              <th class="">Back-end Link</th>
+            </tr>
+            {% for collection in collections %}
+              {% if collection.description == blank %}
+                {% assign troublesomeCollDesc = troublesomeCollDesc | plus: 1 %}
+                <tr>
+                  <td>No collection description!</td>
+                  <td>{{ collection.title }}</td>
+                  <td><a href="/collections/{{ collection.handle }}"><u>Visit Collection Page</u></a></td>
+                  <td><a href="/admin/collections/{{ collection.id }}">Check Collection Config</a></td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </table>
+        {% if troublesomeCollDesc == 0 %}
+         <span style="text-align:center;">No issues found!</span>
+        {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.warn-collection-no-image == true %}
+        <div id="Collection Images" class="tabcontent">
+          <table class="ch--error_table">
+            <tr class="">
+              <th class="">Issue</th>
+              <th class="">Target Title</th>
+              <th class="">Front-end Link</th>
+              <th class="">Back-end Link</th>
+            </tr>
+            {% for collection in collections %}
+              {% if collection.image == blank %}
+                {% assign troublesomeCollImage = troublesomeCollImage | plus: 1 %}
+                <tr>
+                  <td>No collection image!</td>
+                  <td>{{ collection.title }}</td>
+                  <td><a href="/collections/{{ collection.handle }}"><u>Visit Collection Page</u></a></td>
+                  <td><a href="/admin/collections/{{ collection.id }}">Check Collection Config</a></td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </table>
+        {% if troublesomeCollImage == 0 %}
+         <span style="text-align:center;">No issues found!</span>
+        {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.warn-collection-no-products == true %}
+        <div id="Empty Collections" class="tabcontent">
+          <table class="ch--error_table">
+            <tr class="">
+              <th class="">Issue</th>
+              <th class="">Target Title</th>
+              <th class="">Front-end Link</th>
+              <th class="">Back-end Link</th>
+            </tr>
+            {% for collection in collections %}
+              {% if collection.products_count == 0 %}
+                {% assign troublesomeCollProducts = troublesomeCollProducts | plus: 1 %}
+                <tr>
+                  <td>Empty collection!</td>
+                  <td>{{ collection.title }}</td>
+                  <td><a href="/collections/{{ collection.handle }}"><u>Visit Collection Page</u></a></td>
+                  <td><a href="/admin/collections/{{ collection.id }}">Check Collection Config</a></td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </table>
+        {% if troublesomeCollProducts == 0 %}
+         <span style="text-align:center;">No issues found!</span>
+        {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.warn-collection-low-products == true %}
+        <div id="Low Product Collections" class="tabcontent">
+          <table class="ch--error_table">
+            <tr class="">
+              <th class="">Issue</th>
+              <th class="">Target Title</th>
+              <th class="">Front-end Link</th>
+              <th class="">Back-end Link</th>
+            </tr>
+            {% for collection in collections %}
+              {% if collection.products_count < section.settings.products-threshold %}
+                {% assign troublesomeCollLow = troublesomeCollLow | plus: 1 %}
+                <tr>
+                  <td>Less than {{ section.settings.products-threshold }} product(s)!</td>
+                  <td>{{ collection.title }}</td>
+                  <td><a href="/collections/{{ collection.handle }}"><u>Visit Collection Page</u></a></td>
+                  <td><a href="/admin/collections/{{ collection.id }}">Check Collection Config</a></td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </table>
+        {% if troublesomeCollLow == 0 %}
+         <span style="text-align:center;">No issues found!</span>
+        {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.warn-product-no-description == true %}
+        <div id="Product Descriptions" class="tabcontent">
+          <table class="ch--error_table">
+            <tr class="">
+              <th class="">Issue</th>
+              <th class="">Target Title</th>
+              <th class="">Front-end Link</th>
+              <th class="">Back-end Link</th>
+            </tr>
+            {% for collection in collections %}
+              {% for product in collection.products %}
+                {% if product.description == blank %}
+                  {% assign troublesomeProdDesc = troublesomeProdDesc | plus: 1 %}
+                  <tr>
+                    <td>No product description!</td>
+                    <td>{{ product.title }}</td>
+                    <td><a href="/products/{{ product.handle }}"><u>Visit Product Page</u></a></td>
+                    <td><a href="/admin/products/{{ product.id }}">Check Product Config</a></td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </table>
+        {% if troublesomeProdDesc == 0 %}
+         <span style="text-align:center;">No issues found!</span>
+        {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.warn-product-no-image == true %}
+        <div id="Product Images" class="tabcontent">
+          <table class="ch--error_table">
+            <tr class="">
+              <th class="">Issue</th>
+              <th class="">Target Title</th>
+              <th class="">Front-end Link</th>
+              <th class="">Back-end Link</th>
+            </tr> 
+            {% for collection in collections %}
+              {% for product in collection.products %}
+                {% if product.featured_image == blank %}
+                  {% assign troublesomeProdImage = troublesomeProdImage | plus: 1 %}
+                  <tr>
+                    <td>No product image!</td>
+                    <td>{{ product.title }}</td>
+                    <td><a href="/products/{{ product.handle }}"><u>Visit Product Page</u></a></td>
+                    <td><a href="/admin/products/{{ product.id }}">Check Product Config</a></td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </table>
+        {% if troublesomeProdImage == 0 %}
+         <span style="text-align:center;">No issues found!</span>
+        {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.warn-collection-out-of-stock-products == true %}
+        <div id="Unavailable Products" class="tabcontent">
+          <table class="ch--error_table">
+            <tr class="">
+              <th class="">Issue</th>
+              <th class="">Target Title</th>
+              <th class="">Front-end Link</th>
+              <th class="">Back-end Link</th>
+            </tr>
+            {% for collection in collections %}
+              {% for product in collection.products %}
+                {% if product.available == false %}
+                  {% assign troublesomeProdAvail = troublesomeProdAvail | plus: 1 %}
+                  <tr>
+                    <td>Product unavailable for sale!</td>
+                    <td>{{ product.title }}</td>
+                    <td><a href="/products/{{ product.handle }}"><u>Visit Product Page</u></a></td>
+                    <td><a href="/admin/products/{{ product.id }}">Check Product Config</a></td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </table>
+        {% if troublesomeProdAvail == 0 %}
+         <span style="text-align:center;">No issues found!</span>
+        {% endif %}
+        </div>
+      {% endif %}
+  
+      {% if section.settings.warn-product-compare-at != "disabled" %}
+        <div id="Compare-at Pricing" class="tabcontent">
+          {% if section.settings.warn-product-compare-at == "exists" %}
+          <table class="ch--error_table">
+            <tr class="">
+              <th class="">Issue</th>
+              <th class="">Target Title</th>
+              <th class="">Front-end Link</th>
+              <th class="">Back-end Link</th>
+            </tr>
+            {% for collection in collections %}
+              {% for product in collection.products %}
+                {% if product.compare_at_price != blank %}
+                  {% assign troublesomeProdCompare = troublesomeProdCompare | plus: 1 %}
+                  <tr>
+                    <td>Product contains compare-at!</td>
+                    <td>{{ product.title }}</td>
+                    <td><a href="/products/{{ product.handle }}"><u>Visit Product Page</u></a></td>
+                    <td><a href="/admin/products/{{ product.id }}">Check Product Config</a></td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </table>
+          {% elsif section.settings.warn-product-compare-at == "does-not-exist" %}
+          <table class="ch--error_table">
+            <tr class="">
+              <th class="">Issue</th>
+              <th class="">Target Title</th>
+              <th class="">Front-end Link</th>
+              <th class="">Back-end Link</th>
+            </tr>
+            {% for collection in collections %}
+              {% for product in collection.products %}
+                {% if product.compare_at_price == blank %}
+                  {% assign troublesomeProdCompare = troublesomeProdCompare | plus: 1 %}
+                  <tr>
+                    <td>Product does not have compare-at!</td>
+                    <td>{{ product.title }}</td>
+                    <td><a href="/products/{{ product.handle }}"><u>Visit Product Page</u></a></td>
+                    <td><a href="/admin/products/{{ product.id }}">Check Product Config</a></td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </table>
+        {% if troublesomeProdCompare == 0 %}
+         <span style="text-align:center;">No issues found!</span>
+        {% endif %}
+          {% endif %}
+        </div>
+      {% endif %}
+    {% elsif section.settings.section-view-style == "single" %}
+        <table class="ch--error_table">
+            <tr class="">
+              <th class="">Issue</th>
+              <th class="">Target Title</th>
+              <th class="">Front-end Link</th>
+              <th class="">Back-end Link</th>
+            </tr>
+          {% if section.settings.warn-collection-no-description == true %}
+            {% for collection in collections %}
+              {% if collection.description == blank %}
+                {% assign troublesomeCollDesc = troublesomeCollDesc | plus: 1 %}
+                <tr>
+                  <td>No collection description!</td>
+                  <td>{{ collection.title }}</td>
+                  <td><a href="/collections/{{ collection.handle }}"><u>Visit Collection Page</u></a></td>
+                  <td><a href="/admin/collections/{{ collection.id }}">Check Collection Config</a></td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {% if section.settings.warn-collection-no-image == true %}
+            {% for collection in collections %}
+              {% if collection.image == blank %}
+                {% assign troublesomeCollImage = troublesomeCollImage | plus: 1 %}
+                <tr>
+                  <td>No collection image!</td>
+                  <td>{{ collection.title }}</td>
+                  <td><a href="/collections/{{ collection.handle }}"><u>Visit Collection Page</u></a></td>
+                  <td><a href="/admin/collections/{{ collection.id }}">Check Collection Config</a></td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {% if section.settings.warn-collection-no-products == true %}
+            {% for collection in collections %}
+              {% if collection.products_count == 0 %}
+                {% assign troublesomeCollProducts = troublesomeCollProducts | plus: 1 %}
+                <tr>
+                  <td>Empty collection!</td>
+                  <td>{{ collection.title }}</td>
+                  <td><a href="/collections/{{ collection.handle }}"><u>Visit Collection Page</u></a></td>
+                  <td><a href="/admin/collections/{{ collection.id }}">Check Collection Config</a></td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {% if section.settings.warn-collection-low-products == true %}
+            {% for collection in collections %}
+              {% if collection.products_count < section.settings.products-threshold %}
+                {% assign troublesomeCollLow = troublesomeCollLow | plus: 1 %}
+                <tr>
+                  <td>Less than {{ section.settings.products-threshold }} product(s)!</td>
+                  <td>{{ collection.title }}</td>
+                  <td><a href="/collections/{{ collection.handle }}"><u>Visit Collection Page</u></a></td>
+                  <td><a href="/admin/collections/{{ collection.id }}">Check Collection Config</a></td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {% if section.settings.warn-product-no-description == true %}
+            {% for collection in collections %}
+              {% for product in collection.products %}
+                {% if product.description == blank %}
+                  {% assign troublesomeProdDesc = troublesomeProdDesc | plus: 1 %}
+                  <tr>
+                    <td>No product description!</td>
+                    <td>{{ product.title }}</td>
+                    <td><a href="/products/{{ product.handle }}"><u>Visit Product Page</u></a></td>
+                    <td><a href="/admin/products/{{ product.id }}">Check Product Config</a></td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          {% endif %}
+          {% if section.settings.warn-product-no-image == true %}
+            {% for collection in collections %}
+              {% for product in collection.products %}
+                {% if product.featured_image == blank %}
+                  {% assign troublesomeProdImage = troublesomeProdImage | plus: 1 %}
+                  <tr>
+                    <td>No product image!</td>
+                    <td>{{ product.title }}</td>
+                    <td><a href="/products/{{ product.handle }}"><u>Visit Product Page</u></a></td>
+                    <td><a href="/admin/products/{{ product.id }}">Check Product Config</a></td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          {% endif %}
+          {% if section.settings.warn-collection-out-of-stock-products == true %}
+            {% for collection in collections %}
+              {% for product in collection.products %}
+                {% if product.available == false %}
+                  {% assign troublesomeProdAvail = troublesomeProdAvail | plus: 1 %}
+                  <tr>
+                    <td>Product unavailable for sale!</td>
+                    <td>{{ product.title }}</td>
+                    <td><a href="/products/{{ product.handle }}"><u>Visit Product Page</u></a></td>
+                    <td><a href="/admin/products/{{ product.id }}">Check Product Config</a></td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          {% endif %}
+          {% if section.settings.warn-product-compare-at != "disabled" %}
+            {% if section.settings.warn-product-compare-at == "exists" %}
+              {% for collection in collections %}
+              {% for product in collection.products %}
+                {% if product.compare_at_price != blank %}
+                  {% assign troublesomeProdCompare = troublesomeProdCompare | plus: 1 %}
+                  <tr>
+                    <td>Product contains compare-at!</td>
+                    <td>{{ product.title }}</td>
+                    <td><a href="/products/{{ product.handle }}"><u>Visit Product Page</u></a></td>
+                    <td><a href="/admin/products/{{ product.id }}">Check Product Config</a></td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+            {% elsif section.settings.warn-product-compare-at == "does-not-exist" %}
+             {% for collection in collections %}
+              {% for product in collection.products %}
+                {% if product.compare_at_price == blank %}
+                  {% assign troublesomeProdCompare = troublesomeProdCompare | plus: 1 %}
+                  <tr>
+                    <td>Product does not have compare-at!</td>
+                    <td>{{ product.title }}</td>
+                    <td><a href="/products/{{ product.handle }}"><u>Visit Product Page</u></a></td>
+                    <td><a href="/admin/products/{{ product.id }}">Check Product Config</a></td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+            {% endif %}
+          {% endif %}
+        </table>
+
+      {% capture absolutelyNoIssues %}
+      {{ troublesomeCollDesc }}{{ troublesomeCollImage }}{{ troublesomeCollProducts }}{{ troublesomeCollLow }}{{ troublesomeProdDesc }}{{ troublesomeProdImage }}{{ troublesomeProdAvail }}{{ troublesomeProdCompare }}
+      {% endcapture %}
+               
+      {% if absolutelyNoIssues contains "00000000" %}
+        <span style="text-align:center;">No issues found!</span>
+      {% endif %}
+    {% endif %}
+    </div>
+   <div style="text-align:center;">Open-source section created by Willow Binx at <a href="https://binx.gg"><u>binx.gg</u></a>.</div>
+  </div>
+{% endif %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded", runWellnessCheck);
+  
+function runWellnessCheck(){
+  
+  var troublesomeCollDesc = {{ troublesomeCollDesc }};
+  var troublesomeCollImage = {{ troublesomeCollImage }};
+  var troublesomeCollProducts = {{ troublesomeCollProducts }};
+  var troublesomeCollLow = {{ troublesomeCollLow }};
+  var troublesomeProdDesc = {{ troublesomeProdDesc }};
+  var troublesomeProdImage = {{ troublesomeProdImage }};
+  var troublesomeProdAvail = {{ troublesomeProdAvail }};
+  var troublesomeProdCompare = {{ troublesomeProdCompare }};
+
+{% if section.settings.warn-collection-no-description == true %}
+  if (troublesomeCollDesc > 0) {
+    document.getElementById("collDescVitalNeg").style.display = "none";
+    document.getElementById("collDescVitalPos").style.display = "";
+    document.getElementById("collDescVitalCallout").innerText = troublesomeCollDesc +" issues!";
+  } else {
+    document.getElementById("collDescVitalPos").style.display = "none";
+    document.getElementById("collDescVitalNeg").style.display = "";
+    document.getElementById("collDescVitalCallout").innerText = "No issues!";
+  }
+{% endif %}
+
+{% if section.settings.warn-collection-no-image == true %}
+  if (troublesomeCollImage > 0) {
+    document.getElementById("collImageVitalNeg").style.display = "none";
+    document.getElementById("collImageVitalPos").style.display = "";
+    document.getElementById("collImageVitalCallout").innerText = troublesomeCollImage +" issues!";
+  } else {
+    document.getElementById("collImageVitalPos").style.display = "none";
+    document.getElementById("collImageVitalNeg").style.display = "";
+    document.getElementById("collImageVitalCallout").innerText = "No issues!";
+  }
+{% endif %}
+
+{% if section.settings.warn-collection-no-products == true %}
+  if (troublesomeCollProducts > 0) {
+    document.getElementById("collProductsVitalNeg").style.display = "none";
+    document.getElementById("collProductsVitalPos").style.display = "";
+    document.getElementById("collProductsVitalCallout").innerText = troublesomeCollProducts +" issues!";
+  } else {
+    document.getElementById("collProductsVitalPos").style.display = "none";
+    document.getElementById("collProductsVitalNeg").style.display = "";
+    document.getElementById("collProductsVitalCallout").innerText = "No issues!";
+  }
+{% endif %}
+
+{% if section.settings.warn-collection-low-products == true %}
+  if (troublesomeCollLow > 0) {
+    document.getElementById("collLowVitalNeg").style.display = "none";
+    document.getElementById("collLowVitalPos").style.display = "";
+    document.getElementById("collLowVitalCallout").innerText = troublesomeCollLow +" issues!";
+  } else {
+    document.getElementById("collLowVitalPos").style.display = "none";
+    document.getElementById("collLowVitalNeg").style.display = "";
+    document.getElementById("collLowVitalCallout").innerText = "No issues!";
+  }
+{% endif %}
+
+{% if section.settings.warn-product-no-description == true %}
+  if (troublesomeProdDesc > 0) {
+    document.getElementById("prodDescVitalNeg").style.display = "none";
+    document.getElementById("prodDescVitalPos").style.display = "";
+    document.getElementById("prodDescVitalCallout").innerText = troublesomeProdDesc +" issues!";
+  } else {
+    document.getElementById("prodDescVitalPos").style.display = "none";
+    document.getElementById("prodDescVitalNeg").style.display = "";
+    document.getElementById("prodDescVitalCallout").innerText = "No issues!";
+  }
+{% endif %}
+
+{% if section.settings.warn-product-no-image == true %}
+  if (troublesomeProdImage > 0) {
+    document.getElementById("prodImageVitalNeg").style.display = "none";
+    document.getElementById("prodImageVitalPos").style.display = "";
+    document.getElementById("prodImageVitalCallout").innerText = troublesomeProdImage +" issues!";
+
+  } else {
+    document.getElementById("prodImageVitalPos").style.display = "none";
+    document.getElementById("prodImageVitalNeg").style.display = "";
+    document.getElementById("prodImageVitalCallout").innerText = "No issues!";
+  }
+{% endif %}
+
+{% if section.settings.warn-collection-out-of-stock-products == true %}
+  if (troublesomeProdAvail > 0) {
+    document.getElementById("prodAvailVitalNeg").style.display = "none";
+    document.getElementById("prodAvailVitalPos").style.display = "";
+    document.getElementById("prodAvailVitalCallout").innerText = troublesomeProdAvail +" issues!";
+  } else {
+    document.getElementById("prodAvailVitalPos").style.display = "none";
+    document.getElementById("prodAvailVitalNeg").style.display = "";
+    document.getElementById("prodAvailVitalCallout").innerText = "No issues!";
+  }
+{% endif %}
+
+{% if section.settings.warn-product-compare-at != "disabled" %}
+  if (troublesomeProdCompare > 0) {
+    document.getElementById("prodCompareVitalNeg").style.display = "none";
+    document.getElementById("prodCompareVitalPos").style.display = "";
+    document.getElementById("prodCompareVitalCallout").innerText = troublesomeProdCompare +" issues!";
+  } else {
+    document.getElementById("prodCompareVitalPos").style.display = "none";
+    document.getElementById("prodCompareVitalNeg").style.display = "";
+    document.getElementById("prodCompareVitalCallout").innerText = "No issues!";
+  }
+{% endif %}
+  
+}
+</script>
+
+{% schema %}
+{
+  "name": "Collection Hawk",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "section-enabled",
+      "label": "Section Enabled",
+      "info": "You can disable this section while preserving settings by checking the box above. Disabling this section will hide it for everyone but will still remain as a theme section.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "admin-tag",
+      "label": "Customer tag for view:",
+      "info": "Tagging customers with the above input will expose the entire section to them, only tag customers that you want to see this section.",
+      "default": "admin"
+    },
+    {
+      "type": "header",
+      "content": "Collection Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "warn-collection-no-description",
+      "label": "No collection description warning",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "warn-collection-no-image",
+      "label": "No collection image warning",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "warn-collection-no-products",
+      "label": "No products warning",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "warn-collection-out-of-stock-products",
+      "label": "Out of stock products warning",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "warn-collection-low-products",
+      "label": "Low products warning",
+      "default": false
+    },
+    {
+      "type": "number",
+      "id": "products-threshold",
+      "label": "Low Products Threshold",
+      "info": "Choose the least amount of products that you want in any given collection before it's called out.",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Product Settings",
+      "info": "These settings will check all products in a given collection to make sure they have certain attributes."
+    },
+    {
+      "type": "checkbox",
+      "id": "warn-product-no-image",
+      "label": "No product image warning",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "warn-product-no-description",
+      "label": "No product description warning",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "warn-product-compare-at",
+      "label": "Product compare-at price warning",
+      "info": "Displays a warning based on the compare-at price. Useful for merchants that never want to use the compare-at price function, or always want to use it.",
+      "options": [
+        {
+          "value": "disabled",
+          "label": "Disabled"
+        },
+        {
+          "value": "exists",
+          "label": "Exists"
+        },
+        {
+          "value": "does-not-exist",
+          "label": "Does Not Exist"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "warn-product-types",
+      "label": "Mismatched product type warning",
+      "info": "If the collection title exactly matches the \"Type\" of the product, this setting will verify that all products in that collection have that tag. Useful for manual collections.",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Custom Rules",
+      "info": "This section allows you to receive a warning based on your specific needs. You may set a maximum of four custom rules at a time. If you need more, refer to the GitHub setup instructions."
+    },
+    {
+      "type": "header",
+      "content": "Visual Tweaks"
+    },
+    {
+      "type": "select",
+      "id": "section-view-style",
+      "label": "View Style",
+      "options": [
+        {
+          "value": "tabs",
+          "label": "Tabs"
+        },
+        {
+          "value": "single",
+          "label": "Single"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "section-spacing-unit",
+      "label": "Spacing Unit",
+      "options": [
+        {
+          "value": "px",
+          "label": "px"
+        },
+        {
+          "value": "rem",
+          "label": "rem"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "theme-wrapper-class",
+      "label": "Theme wrapper class:"
+    },
+    {
+      "type": "number",
+      "id": "section-spacing-top",
+      "label": "Section spacing top:",
+      "default": 20
+    },
+    {
+      "type": "number",
+      "id": "section-spacing-bottom",
+      "label": "Section spacing bottom:",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Hawk",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}
