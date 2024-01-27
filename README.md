@@ -16,6 +16,7 @@
   <li>Choose between a single list view or sorted tab view,</li>
   <li>Configure your section so it only displays when a customer has a specific tag (such as an 'admin' tag),</li>
   <li>Disable the section while preserving settings,</li>
+  <li>Functions on any theme, although some graphical issues may exist on certain themes.</li>
 </ul>
 <p>Configure your theme section to instantly display products/collections that fit certain criteria:</p>
 <ul>
@@ -29,7 +30,10 @@
   <li>Products that contain a compare-at price,</li>
   <li>Products that do not contain a compare-at price.</li>
 </ul>
+<p>Sample view on vanilla Dawn theme:</p>
 <img src="https://github.com/binxdqt/shopify-collection-hawk-analysis-tool/assets/143977458/d06c44c5-d8e8-43ad-90d2-bb7ece821aa9">
+<p>Sample view on customized theme:</p>
+<img src="https://github.com/binxdqt/shopify-collection-hawk-analysis-tool/assets/143977458/2328adcb-89a2-498f-8780-01cecd05f805">
 
 
 <h3>Setup Instructions</h3>
