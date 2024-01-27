@@ -1,5 +1,4 @@
 <h3>Collection Hawk - Collection Analysis Tool for Shopify Themes</h3>
-<p>Don't like reading? Watch a video about this tool <a href="#"><u>here</u></a>.</p>
 
 <p>If you've been using Shopify for long enough, you might have noticed that managing collections can be stressful. Especially when you have 50+ collections, with thousands of SKUs, the Shopify Admin UI doesn't quite cut it when you want to check something at a glance. User experience is paramount, and users don't want to land on empty collection pages or even worse, a collection page full of out of stock products.</p>
 <p>I wanted to create a theme section to solve many issues that I come across while managing collections across all Shopify stores that I manage, regardless of theme used. Which is why I created Collection Hawk. This section is a front-end analysis tool for Shopify stores that want to see important details about all of their collections/products in one convenient place.</p>
@@ -37,7 +36,6 @@
 
 
 <h3>Setup Instructions</h3>
-<p>Step-by-step instructions are available <a href="#"><u>on this video</u></a>.</p>
 <h4>1. Import the section to your theme code.</h4>
 <p>Copy the entire liquid file attached in this repository under the "Sections" part of your theme code.</p>
 <h4>2. Set a customer tag to view the section.</h4>
@@ -57,4 +55,4 @@
 </ul>
 
 <h3>Extend Your Support</h3>
-<p>This code is offered to you open-source and free to use as you please. If you like this section or find it useful, <a href="https://twitter.com/binxdqt"><u>let me know on Twitter</u></a> or <a href="#"><u>consider donating</u></a> so I can continue to make free to use and open-source projects like this.</p>
+<p>This code is offered to you open-source and free to use as you please. If you like this section or find it useful, <a href="https://twitter.com/binxdqt"><u>let me know on Twitter</u></a> or <a href="https://streamelements.com/binxdqt/tip"><u>consider donating</u></a> so I can continue to make free to use and open-source projects like this.</p>
