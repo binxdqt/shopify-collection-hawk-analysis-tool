@@ -1,3 +1,4 @@
+{% if customer.tags contains section.settings.admin-tag %}
 <style>
 .ch--header{
   text-align:center;
@@ -27,6 +28,7 @@
   text-align: center;
 }
 
+/* Style the tab */
 .ch--tabs {
   overflow: hidden;
   border: 1px solid #ccc;
@@ -35,6 +37,7 @@
   justify-content: space-around;
 }
 
+/* Style the buttons that are used to open the tab content */
 .ch--tabs button {
   background-color: inherit;
   float: left;
@@ -46,14 +49,17 @@
   width: 100%;
 }
 
+/* Change background color of buttons on hover */
 .ch--tabs button:hover {
   background-color: #ddd;
 }
 
+/* Create an active/current tablink class */
 .ch--tabs button.active {
   background-color: #ccc;
 }
 
+/* Style the tab content */
 .tabcontent {
   display: none;
   padding: 6px 12px;
@@ -61,19 +67,27 @@
   border-top: none;
   text-align:center;
 }
+  
 </style>
 
 <script>
   function openReport(evt, cityName) {
+  // Declare all variables
   var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none";
   }
+
+  // Get all elements with class="tablinks" and remove the class "active"
   tablinks = document.getElementsByClassName("tablinks");
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
 }
@@ -673,7 +687,7 @@ function runWellnessCheck(){
   
 }
 </script>
-
+{% endif %}
 {% schema %}
 {
   "name": "Collection Hawk",
