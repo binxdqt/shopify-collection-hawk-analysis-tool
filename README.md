@@ -6,7 +6,7 @@
 
 <p>No more manual audits of collections, checking to see if every collection has products, and a picture, and a description. On top of that, <b>no more solutions that you have to pay for</b>!</p>
 
-<p>This theme section is 100% open-source and available for anyone to use for free. </p>
+<p>This theme section is 100% open-source and available for anyone to use for free.</p>
 
 <h3>Main Features</h3>
 <ul>
@@ -27,6 +27,8 @@
   <li>Products that contain a compare-at price,</li>
   <li>Products that do not contain a compare-at price.</li>
 </ul>
+<img src="https://github.com/binxdqt/shopify-collection-hawk-analysis-tool/assets/143977458/d06c44c5-d8e8-43ad-90d2-bb7ece821aa9">
+
 
 <h3>Setup Instructions</h3>
 <p>Step-by-step instructions are available <a href="#"><u>on this video</u></a>.</p>
